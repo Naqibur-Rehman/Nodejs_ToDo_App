@@ -44,8 +44,8 @@ export const logout = (req, res) => {
     .status(200)
     .cookie("token", "", {
       expires: new Date(Date.now()),
-      sameSite: (process.env.NODE_DEV = "Development" ? "lax" : "none"),
-      secure: (process.env.NODE_DEV = "Development" ? false : true),
+      sameSite: (process.env.NODE_DEV === "Development" ? "lax" : "none"),
+      secure: (process.env.NODE_DEV === "Development" ? false : true),
     })
     .json({
       success: true,
