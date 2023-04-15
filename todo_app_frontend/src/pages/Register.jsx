@@ -8,13 +8,13 @@ import { Context, server } from "../main";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    
-    const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const [password, setPassword] = useState("");
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-      try {
+    try {
       const { data } = await axios.post(
         `${server}/users/new`,
         { name, email, password },
@@ -24,23 +24,18 @@ const Register = () => {
           },
           withCredentials: true,
         }
-        );
-        console.log("before toast success");
-          toast.success(data.message, { position: "bottom-center" });
-          setIsAuthenticated(true)
-        console.log("after toast success")
+      );
+      toast.success(data.message);
+      setIsAuthenticated(true);
     } catch (error) {
-        console.log("before toast error");
-        toast.error("some error occured", { position: "bottom-center" });
-        console.log("after toast error");
-          console.log(error);
-          setIsAuthenticated(false)
+      toast.error(error.response.data.message);
+      setIsAuthenticated(false);
     }
   };
 
-    if (isAuthenticated) return <Navigate to={'/'}/>
+  if (isAuthenticated) return <Navigate to={"/"} />;
   return (
-      <div className="login">
+    <div className="login">
       <section>
         <form onSubmit={submitHandler}>
           <input
@@ -68,11 +63,11 @@ const Register = () => {
             required
           />
           <button>Sign Up</button>
-          <h4>Already have account</h4>
+          <h4>Or, already have account</h4>
           <Link to="/login">Login</Link>
         </form>
-          </section>
-          <Toaster />
+      </section>
+      <Toaster />
     </div>
   );
 };
