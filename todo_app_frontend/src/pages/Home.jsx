@@ -12,7 +12,7 @@ const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [refresh, setRefresh] = useState(false)
 
-  const {isAuthentiicated} = useContext(Context)
+  const {isAuthenticated} = useContext(Context)
 
   const updateHandler = async (id) => {
     try {
@@ -82,7 +82,7 @@ const Home = () => {
       .catch((e) => toast.error(e.response.data.message));
   }, [refresh]);
 
-  if (!isAuthentiicated) return <Navigate to={'/login'} />
+  if (!isAuthenticated) return <Navigate to={'/login'} />
 
   return (
     <div className="container">
