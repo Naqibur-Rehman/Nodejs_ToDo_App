@@ -5,13 +5,14 @@ import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 
 const Login = () => {
-
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, loading, setLoading } =
+    useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const { data } = await axios.post(
         `${server}/users/login`,
@@ -25,9 +26,11 @@ const Login = () => {
       );
       toast.success(data.message);
       setIsAuthenticated(true);
+      setLoading(false)
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(false);
+      setLoading(false)
     }
   };
 
@@ -52,7 +55,7 @@ const Login = () => {
             placeholder="Password"
             required
           />
-          <button>Login</button>
+          <button disabled={loading }>Login</button>
           <h4>Or, new user Register first</h4>
           <Link to="/register">Sign Up</Link>
         </form>

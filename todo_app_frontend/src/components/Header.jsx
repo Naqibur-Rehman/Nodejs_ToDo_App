@@ -5,18 +5,20 @@ import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 
 const Header = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-
+  const { isAuthenticated, setIsAuthenticated, loading, setLoading } = useContext(Context);
   const logoutHandler = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get(`${server}/users/logout`, {
+      await axios.get(`${server}/users/logout`, {
         withCredentials: true,
       });
       toast.success("Logged Out Successfully");
       setIsAuthenticated(false);
+      setLoading(false)
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(true);
+      setLoading(false)
     }
   };
 
@@ -29,7 +31,7 @@ const Header = () => {
         <Link to={"/"}>Home</Link>
         <Link to={"/profile"}>Profile</Link>
         {isAuthenticated ? (
-          <button onClick={logoutHandler} className="btn"> Logout </button>
+          <button disabled={loading} onClick={logoutHandler} className="btn"> Logout </button>
         ) : (
           <Link to={"/login"}>Login</Link>
         )}

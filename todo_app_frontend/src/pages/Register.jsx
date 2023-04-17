@@ -10,10 +10,11 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, loading, setLoading } = useContext(Context);
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const { data } = await axios.post(
         `${server}/users/new`,
@@ -27,9 +28,11 @@ const Register = () => {
       );
       toast.success(data.message);
       setIsAuthenticated(true);
+      setLoading(false)
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(false);
+      setLoading(false)
     }
   };
 
@@ -62,7 +65,7 @@ const Register = () => {
             placeholder="Password"
             required
           />
-          <button>Sign Up</button>
+          <button disabled={loading}>Sign Up</button>
           <h4>Or, already have account</h4>
           <Link to="/login">Login</Link>
         </form>
