@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { sendCookie } from "../utils/fearures.js";
 import ErrorHandler from "../middleware/error.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
